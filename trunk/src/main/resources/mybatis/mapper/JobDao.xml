@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengzu.dao.JobDao">
+  <select id="selectQuartzEntity" resultType="com.pengzu.entity.QuartzEntity">
+    SELECT job.JOB_NAME as jobName,job.JOB_GROUP as jobGroup,job.DESCRIPTION as description,job.JOB_CLASS_NAME as jobClassName,
+    cron.CRON_EXPRESSION as cronExpression,tri.TRIGGER_NAME as triggerName,tri.TRIGGER_STATE as triggerState,
+    job.JOB_NAME as oldJobName,job.JOB_GROUP as oldJobGroup
+    FROM quartz.QRTZ_JOB_DETAILS AS job LEFT JOIN quartz.QRTZ_TRIGGERS AS tri ON job.JOB_NAME = tri.JOB_NAME
+    LEFT JOIN quartz.QRTZ_CRON_TRIGGERS AS cron ON cron.TRIGGER_NAME = tri.TRIGGER_NAME
+    WHERE tri.TRIGGER_TYPE = 'CRON'
+    <if test="quartz.jobName != null">
+      AND job.JOB_NAME = #{quartz.jobName}
+    </if>
+    limit #{offset},#{rows}
+  </select>
+  <select id="selectQuartzEntityCount" resultType="java.lang.Long">
+    SELECT count(*)
+    FROM quartz.QRTZ_JOB_DETAILS AS job LEFT JOIN quartz.QRTZ_TRIGGERS AS tri ON job.JOB_NAME = tri.JOB_NAME
+    LEFT JOIN quartz.QRTZ_CRON_TRIGGERS AS cron ON cron.TRIGGER_NAME = tri.TRIGGER_NAME
+    WHERE tri.TRIGGER_TYPE = 'CRON'
+    <if test="quartz.jobName != null">
+      AND job.JOB_NAME = #{quartz.jobName}
+    </if>
+  </select>
+
+  <select id="selectQuartzEntityByJobNameAndJobGroup" resultType="com.pengzu.entity.QuartzEntity">
+    SELECT job.JOB_NAME as jobName,job.JOB_GROUP as jobGroup,job.DESCRIPTION as description,job.JOB_CLASS_NAME as jobClassName,
+    cron.CRON_EXPRESSION as cronExpression,tri.TRIGGER_NAME as triggerName,tri.TRIGGER_STATE as triggerState,
+    job.JOB_NAME as oldJobName,job.JOB_GROUP as oldJobGroup
+    FROM quartz.QRTZ_JOB_DETAILS AS job LEFT JOIN quartz.QRTZ_TRIGGERS AS tri ON job.JOB_NAME = tri.JOB_NAME
+    LEFT JOIN quartz.QRTZ_CRON_TRIGGERS AS cron ON cron.TRIGGER_NAME = tri.TRIGGER_NAME
+    WHERE tri.TRIGGER_TYPE = 'CRON'
+    <if test="quartz.jobName != null">
+      AND job.JOB_NAME = #{quartz.jobName}
+    </if>
+    <if test="quartz.jobName != null">
+      AND job.JOB_NAME = #{quartz.jobName}
+    </if>
+  </select>
+</mapper>

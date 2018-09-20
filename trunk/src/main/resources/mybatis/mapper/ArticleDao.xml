@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengzu.dao.ArticleDao">
+  <resultMap id="BaseResultMap" type="com.pengzu.entity.Article">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="folder_id" jdbcType="BIGINT" property="folderId" />
+    <result column="father_folder_id" jdbcType="BIGINT" property="fatherFolderId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="view_count" jdbcType="BIGINT" property="viewCount" />
+    <result column="comment_count" jdbcType="BIGINT" property="commentCount" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="check" jdbcType="INTEGER" property="check" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="gmt_article" jdbcType="TIMESTAMP" property="gmtArticle" />
+    <result column="gmt_publish" jdbcType="TIMESTAMP" property="gmtPublish" />
+    <result column="is_publish" jdbcType="INTEGER" property="isPublish" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.pengzu.entity.Article">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, folder_id, father_folder_id, user_id, picture, title, summary, view_count, comment_count, 
+    status, `check`, keywords, create_time, update_time, is_delete, gmt_article, gmt_publish,
+    is_publish
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.pengzu.entity.ArticleExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pengzucms.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.pengzu.entity.ArticleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from pengzucms.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pengzucms.article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pengzucms.article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pengzu.entity.ArticleExample">
+    delete from pengzucms.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pengzu.entity.Article">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pengzucms.article (folder_id, father_folder_id, user_id,
+      picture, title, summary, 
+      view_count, comment_count, status, 
+      `check`, keywords, create_time,
+      update_time, is_delete, gmt_article, 
+      gmt_publish, is_publish, content
+      )
+    values (#{folderId,jdbcType=BIGINT}, #{fatherFolderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{picture,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{viewCount,jdbcType=BIGINT}, #{commentCount,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+      #{check,jdbcType=INTEGER}, #{keywords,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{gmtArticle,jdbcType=TIMESTAMP}, 
+      #{gmtPublish,jdbcType=TIMESTAMP}, #{isPublish,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pengzu.entity.Article">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pengzucms.article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="folderId != null">
+        folder_id,
+      </if>
+      <if test="fatherFolderId != null">
+        father_folder_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="viewCount != null">
+        view_count,
+      </if>
+      <if test="commentCount != null">
+        comment_count,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="check != null">
+        `check`,
+      </if>
+      <if test="keywords != null">
+        keywords,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="gmtArticle != null">
+        gmt_article,
+      </if>
+      <if test="gmtPublish != null">
+        gmt_publish,
+      </if>
+      <if test="isPublish != null">
+        is_publish,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="folderId != null">
+        #{folderId,jdbcType=BIGINT},
+      </if>
+      <if test="fatherFolderId != null">
+        #{fatherFolderId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="viewCount != null">
+        #{viewCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentCount != null">
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="check != null">
+        #{check,jdbcType=INTEGER},
+      </if>
+      <if test="keywords != null">
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="gmtArticle != null">
+        #{gmtArticle,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtPublish != null">
+        #{gmtPublish,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isPublish != null">
+        #{isPublish,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pengzu.entity.ArticleExample" resultType="java.lang.Long">
+    select count(*) from pengzucms.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pengzucms.article
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.folderId != null">
+        folder_id = #{record.folderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.fatherFolderId != null">
+        father_folder_id = #{record.fatherFolderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picture != null">
+        picture = #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null">
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.viewCount != null">
+        view_count = #{record.viewCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentCount != null">
+        comment_count = #{record.commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.check != null">
+        `check` = #{record.check,jdbcType=INTEGER},
+      </if>
+      <if test="record.keywords != null">
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null">
+        is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtArticle != null">
+        gmt_article = #{record.gmtArticle,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtPublish != null">
+        gmt_publish = #{record.gmtPublish,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isPublish != null">
+        is_publish = #{record.isPublish,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update pengzucms.article
+    set id = #{record.id,jdbcType=BIGINT},
+      folder_id = #{record.folderId,jdbcType=BIGINT},
+      father_folder_id = #{record.fatherFolderId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      picture = #{record.picture,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      view_count = #{record.viewCount,jdbcType=BIGINT},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=INTEGER},
+      `check` = #{record.check,jdbcType=INTEGER},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{record.isDelete,jdbcType=INTEGER},
+      gmt_article = #{record.gmtArticle,jdbcType=TIMESTAMP},
+      gmt_publish = #{record.gmtPublish,jdbcType=TIMESTAMP},
+      is_publish = #{record.isPublish,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pengzucms.article
+    set id = #{record.id,jdbcType=BIGINT},
+      folder_id = #{record.folderId,jdbcType=BIGINT},
+      father_folder_id = #{record.fatherFolderId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      picture = #{record.picture,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      view_count = #{record.viewCount,jdbcType=BIGINT},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=INTEGER},
+      `check` = #{record.check,jdbcType=INTEGER},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{record.isDelete,jdbcType=INTEGER},
+      gmt_article = #{record.gmtArticle,jdbcType=TIMESTAMP},
+      gmt_publish = #{record.gmtPublish,jdbcType=TIMESTAMP},
+      is_publish = #{record.isPublish,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pengzu.entity.Article">
+    update pengzucms.article
+    <set>
+      <if test="folderId != null">
+        folder_id = #{folderId,jdbcType=BIGINT},
+      </if>
+      <if test="fatherFolderId != null">
+        father_folder_id = #{fatherFolderId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="viewCount != null">
+        view_count = #{viewCount,jdbcType=BIGINT},
+      </if>
+      <if test="commentCount != null">
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="check != null">
+        `check` = #{check,jdbcType=INTEGER},
+      </if>
+      <if test="keywords != null">
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="gmtArticle != null">
+        gmt_article = #{gmtArticle,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtPublish != null">
+        gmt_publish = #{gmtPublish,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isPublish != null">
+        is_publish = #{isPublish,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pengzu.entity.Article">
+    update pengzucms.article
+    set folder_id = #{folderId,jdbcType=BIGINT},
+      father_folder_id = #{fatherFolderId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      view_count = #{viewCount,jdbcType=BIGINT},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      `check` = #{check,jdbcType=INTEGER},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      gmt_article = #{gmtArticle,jdbcType=TIMESTAMP},
+      gmt_publish = #{gmtPublish,jdbcType=TIMESTAMP},
+      is_publish = #{isPublish,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pengzu.entity.Article">
+    update pengzucms.article
+    set folder_id = #{folderId,jdbcType=BIGINT},
+      father_folder_id = #{fatherFolderId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      view_count = #{viewCount,jdbcType=BIGINT},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      `check` = #{check,jdbcType=INTEGER},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      gmt_article = #{gmtArticle,jdbcType=TIMESTAMP},
+      gmt_publish = #{gmtPublish,jdbcType=TIMESTAMP},
+      is_publish = #{isPublish,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

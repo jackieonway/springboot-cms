@@ -1,0 +1,67 @@
+#JavaMailSender  outlook 邮箱的发送
+spring:
+  freemarker:
+    allow-request-override:
+        false
+    cache:
+        true
+    check-template-location:
+        true
+    charset:
+        UTF-8
+    content-type:
+        text/html
+    expose-request-attributes:
+        false
+    expose-session-attributes:
+        false
+    expose-spring-macro-helpers:
+        false
+    suffix:
+        .ftl
+    template-loader-path:
+       file:///E://Code//cms//templates//
+  resources:
+    static-locations: file:///E://Code//cms//static//
+  mail:
+    host: smtp.qq.com
+    username: xxxxxxxx@qq.com
+    password: 
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  datasource:
+    name: test
+    url: jdbc:mysql://localhost:3306?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: root
+    password:
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+file:
+  root: E:\filesystem\
+#  root: E:\apache-tomcat-8.5.16-windows-x64\apache-tomcat-8.5.16\webapps\ROOT\WEB-INF\classes\static
+email:
+    username: xxxxxxxxx@qq.com
+mybatis:
+  mapper-locations: classpath*:mybatis/mapper/*.xml
+  type-aliases-package: com.pengzu.entity
+  config-location: classpath:mybatis/mybatis-config.xml
