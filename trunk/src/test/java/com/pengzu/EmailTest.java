@@ -25,8 +25,8 @@ public class EmailTest {
     @Test
     public void testSend(){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("jackiehe2016@outlook.com");//发送者.
-        message.setTo("1254825871@qq.com");//接收者.
+        message.setFrom("xxxx@xxxx.com");//发送者.
+        message.setTo("xxxxx@xxx.com");//接收者.
         message.setSubject("测试邮件（邮件主题）");//邮件主题.
         message.setText("这是邮件内容111");//邮件内容.
         javaMailSender.send(message);//发送邮件
@@ -38,8 +38,8 @@ public class EmailTest {
         try {
             message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(new InternetAddress("jackiehe2016@outlook.com", "asd", "UTF-8"));
-            helper.setTo("1254825871@qq.com");
+            helper.setFrom(new InternetAddress("xxxxxx@xxxx.com", "asd", "UTF-8"));
+            helper.setTo("xxxxx@xxx.com");
             helper.setSubject("用户注册激活");
             StringBuffer sb = new StringBuffer();
             sb.append("<h1>XX用户注册激活</h1>")
@@ -54,15 +54,15 @@ public class EmailTest {
 
     @Test
     public void testTemp(){
-        EmailUtils.sendSingleAttachmentFileEmail(javaMailSender,"jackiehe2016@outlook.com",
-                "1254825871@qq.com",null,"测试邮件: 带附件",
+        EmailUtils.sendSingleAttachmentFileEmail(javaMailSender,"xxxxxx@xxxx.com",
+                "xxxxx@xxx.com",null,"测试邮件: 带附件",
                 "<h2>这是一个测试发送附件的邮件<h2>",true,"baiduQRCode.jpg",new File("E://test.jpg"));
     }
 
     @Test
     public void testHtml(){
-        EmailUtils.sendSingleHtmlEmail(javaMailSender,"jackiehe2016@outlook.com",
-                "1254825871@qq.com",null,"测试邮件: 发送图片",
+        EmailUtils.sendSingleHtmlEmail(javaMailSender,"xxxxx@xxxx.com",
+                "xxxxxx@xxx.com",null,"测试邮件: 发送图片",
                 "<h2>这是一个测试发送图片的邮件<h2>" +
                         "<img src='cid:E://test.jpg'/>",true);
     }

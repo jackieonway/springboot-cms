@@ -1,10 +1,12 @@
 package com.pengzu.controller.manage;
 
+import com.pengzu.config.CodeEnum;
 import com.pengzu.entity.Article;
 import com.pengzu.entity.SysUser;
 import com.pengzu.entity.result.Response;
 import com.pengzu.entity.vo.ArticleVo;
 import com.pengzu.entity.vo.FolderVo;
+import com.pengzu.entity.vo.SysUserVo;
 import com.pengzu.utils.BeanConvertUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -50,6 +52,8 @@ public class ArticleManageController extends BaseController {
                 articleVo.setFolderId(articleVo.getFatherFolderId());
                 articleVo.setFatherFolderId(0L);
             }
+            SysUserVo sysUserVo = (SysUserVo)request.getSession().getAttribute(CodeEnum.SYS_USER_SESSION_ID.getValue());
+            articleVo.setUserId(sysUserVo.getId());
             Article article = articleService.addArticle(articleVo);
             if (article != null) {
                 articleVo = BeanConvertUtils.convert(article, ArticleVo.class);
