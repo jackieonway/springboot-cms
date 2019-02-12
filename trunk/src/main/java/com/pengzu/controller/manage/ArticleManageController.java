@@ -52,8 +52,8 @@ public class ArticleManageController extends BaseController {
                 articleVo.setFolderId(articleVo.getFatherFolderId());
                 articleVo.setFatherFolderId(0L);
             }
-            SysUserVo sysUserVo = (SysUserVo)request.getSession().getAttribute(CodeEnum.SYS_USER_SESSION_ID.getValue());
-            articleVo.setUserId(sysUserVo.getId());
+            SysUser sysUser = (SysUser)request.getSession().getAttribute(CodeEnum.SYS_USER_SESSION_ID.getValue());
+            articleVo.setUserId(sysUser.getId());
             Article article = articleService.addArticle(articleVo);
             if (article != null) {
                 articleVo = BeanConvertUtils.convert(article, ArticleVo.class);
